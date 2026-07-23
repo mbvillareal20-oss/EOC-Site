@@ -17,6 +17,7 @@ let currentCategory = 'All';
 let currentSearch = '';
 let references: ReferenceItem[] = [];
 let portalSettings: PortalSettings | null = null;
+let availableCategories: Map<string, ReferenceItem[]> = new Map();
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Subscribe to Realtime Data
   subscribeReferences((items) => {
     references = items;
+    buildCategoryMap();
+    updateCategoryFilters();
     renderReferences();
   });
 
@@ -39,6 +42,54 @@ document.addEventListener('DOMContentLoaded', () => {
     applyPortalSettings(settings);
   });
 });
+
+/**
+ * Build category map from references - only shows categories with data
+ */
+function buildCategoryMap() {
+  availableCategories.clear();
+  references.forEach(ref => {
+    const cat = ref.category || 'General';
+    if (!availableCategories.has(cat)) {
+      availableCategories.set(cat, []);
+    }
+    availableCategories.get(cat)!.push(ref);
+  });
+}
+
+/**
+ * Update category filter buttons - only show categories with data
+ */
+function updateCategoryFilters() {
+  const filterContainer = document.getElementById('filterContainer');
+  if (!filterContainer) return;
+
+  // Keep "All References" button, remove old category buttons
+  const allBtn = filterContainer.querySelector('[data-category="All"]');
+  if (!allBtn) return;
+
+  filterContainer.querySelectorAll('[data-category]:not([data-category="All"])').forEach(btn => btn.remove());
+
+  // Add only categories that have data
+  const sortedCategories = Array.from(availableCategories.keys()).sort();
+  
+  sortedCategories.forEach(category => {
+    const count = availableCategories.get(category)?.length || 0;
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.setAttribute('data-category', category);
+    btn.innerHTML = `<span>${escapeHtml(category)}</span>`;
+    
+    btn.addEventListener('click', () => {
+      filterContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = category;
+      renderReferences();
+    });
+
+    filterContainer.appendChild(btn);
+  });
+}
 
 /**
  * Render Auth Views: Login Screen, Access Denied, or Main Portal
@@ -95,7 +146,7 @@ function showLoginOverlay() {
 
   authOverlay.innerHTML = `
     <div class="auth-card" style="max-width: 440px; width: 90%; position: relative;">
-      <button id="closeAuthModalBtn" title="Close modal" style="position: absolute; top: 0.85rem; right: 0.85rem; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 4px; line-height: 1;">✕</button>
+      <button id="closeAuthModalBtn" title="Close modal" style="position: absolute; top: 0.85rem; right: 0.85rem; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 0.25rem;">×</button>
 
       <img src="${logoUrl}" class="auth-logo" alt="DSWD EOC Logo" />
       <div>
@@ -140,20 +191,20 @@ function showLoginOverlay() {
       </button>
 
       <!-- Domain Helper Banner -->
-      <div style="background-color: var(--bg-card); border: 1px solid var(--border-subtle); padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.75rem; color: var(--text-muted); text-align: left;">
+      <div style="background-color: var(--bg-card); border: 1px solid var(--border-subtle); padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
         <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
           <span style="font-weight: 600; color: var(--text-main);">Current App Domain:</span>
           <button id="copyDomainBtn" class="btn btn-secondary btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;">📋 Copy Domain</button>
         </div>
         <code id="domainCode" style="font-family: monospace; font-size: 0.725rem; word-break: break-all; color: var(--primary); display: block; margin-bottom: 0.25rem;">${currentHost}</code>
-        <span style="display: block; font-size: 0.7rem; color: var(--text-muted);">To enable Google Popup Auth, add this domain in <strong>Firebase Console → Authentication → Settings → Authorized domains</strong>.</span>
+        <span style="display: block; font-size: 0.7rem; color: var(--text-muted);">To enable Google Popup Auth, add this domain in <strong>Firebase Console → Authentication → Settings → Authorized domains</strong></span>
       </div>
 
       <button id="continueVisitorBtn" class="btn btn-secondary" style="width: 100%; margin-top: 0.25rem; font-size: 0.825rem;">
         Continue Browsing as Visitor
       </button>
 
-      <div id="authErrorMsg" style="display: none; padding: 0.75rem; border-radius: 6px; background-color: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); color: #dc2626; font-size: 0.8rem; text-align: center; line-height: 1.4;"></div>
+      <div id="authErrorMsg" style="display: none; padding: 0.75rem; border-radius: 6px; background-color: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); color: #dc2626; font-size: 0.75rem; margin-top: 0.75rem;"></div>
     </div>
   `;
 
@@ -232,9 +283,9 @@ function showLoginOverlay() {
         if (err?.code === 'auth/popup-blocked') {
           msg = 'Pop-up blocked by browser! Please allow pop-ups for this site or use Direct Email Sign-In above.';
         } else if (err?.code === 'auth/unauthorized-domain') {
-          msg = `Domain "${currentHost}" is not authorized in Firebase Console yet! Please use Direct Email Sign-In above, or add this domain under Firebase Console → Authentication → Settings → Authorized Domains.`;
+          msg = `Domain is not authorized in Firebase Console! Please use Direct Email Sign-In above.`;
         } else if (err?.code === 'auth/operation-not-allowed') {
-          msg = 'Google provider is disabled in Firebase Console! Please use Direct Email Sign-In above or enable Google Sign-In in Firebase Console.';
+          msg = 'Google provider is disabled in Firebase Console! Please use Direct Email Sign-In above.';
         } else if (err?.message) {
           msg = `Sign-in error: ${err.message}`;
         }
@@ -264,7 +315,7 @@ function showAccessDeniedOverlay(email: string) {
 
   deniedOverlay.innerHTML = `
     <div class="denied-card" style="position: relative;">
-      <button id="closeDeniedBtn" style="position: absolute; top: 0.85rem; right: 0.85rem; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 4px; line-height: 1;">✕</button>
+      <button id="closeDeniedBtn" style="position: absolute; top: 0.85rem; right: 0.85rem; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 0.25rem;">×</button>
 
       <div class="denied-icon-box">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -326,7 +377,7 @@ function renderUserHeaderPill(account: UserAccount | null, user: any) {
 
   if (!user) {
     userContainer.innerHTML = `
-      <button id="openSignInModalBtn" style="display: flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.85rem; font-size: 0.825rem; font-weight: 600; border-radius: 20px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; backdrop-filter: blur(4px); cursor: pointer; transition: all 0.2s ease;">
+      <button id="openSignInModalBtn" style="display: flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.85rem; font-size: 0.825rem; font-weight: 600; border-radius: 20px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
           <polyline points="10 17 15 12 10 7"></polyline>
@@ -352,7 +403,7 @@ function renderUserHeaderPill(account: UserAccount | null, user: any) {
       <a href="admin.html" class="admin-nav-link" aria-label="Open Admin Panel">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 20.74a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
         <span>Admin Panel</span>
       </a>
@@ -366,7 +417,7 @@ function renderUserHeaderPill(account: UserAccount | null, user: any) {
       `}
       <span>${name}</span>
       <span class="role-badge ${isAdmin ? 'admin' : 'viewer'}">${role}</span>
-      <button id="headerSignOutBtn" style="background: none; border: none; color: #ffffff; opacity: 0.8; cursor: pointer; display: flex; align-items: center; padding: 2px; margin-left: 4px;" title="Sign Out">
+      <button id="headerSignOutBtn" style="background: none; border: none; color: #ffffff; opacity: 0.8; cursor: pointer; display: flex; align-items: center; padding: 2px; margin-left: 4px;" title="Sign out">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
           <polyline points="16 17 21 12 16 7"></polyline>
