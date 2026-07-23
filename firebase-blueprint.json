@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "User accounts with role-based access control (Admin or Viewer)",
+      "properties": {
+        "email": { "type": "string", "description": "User Gmail address" },
+        "name": { "type": "string", "description": "User display name" },
+        "role": { "type": "string", "description": "User role: Admin or Viewer" },
+        "status": { "type": "string", "description": "Status: Active or Suspended" },
+        "photoURL": { "type": "string", "description": "User avatar photo URL" },
+        "updatedAt": { "type": "string", "description": "Last modified timestamp" }
+      },
+      "required": ["email", "role"]
+    },
+    "references": {
+      "title": "References",
+      "description": "EOC Portal reference links and resources",
+      "properties": {
+        "id": { "type": "string", "description": "Unique reference ID" },
+        "title": { "type": "string", "description": "Resource title" },
+        "icon": { "type": "string", "description": "Icon type key (drive, sheets, slides, meet, forms, pdf, website)" },
+        "category": { "type": "string", "description": "Category group name" },
+        "badge": { "type": "string", "description": "Optional badge tag text" },
+        "url": { "type": "string", "description": "Google Drive, Sheets, Slides, Meet, or web URL" },
+        "description": { "type": "string", "description": "Brief description" },
+        "visible": { "type": "boolean", "description": "Visibility flag on portal" },
+        "order": { "type": "number", "description": "Display position order" }
+      },
+      "required": ["title", "url", "category"]
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Portal branding, banner, logo, and theme configuration",
+      "properties": {
+        "mainTitle": { "type": "string", "description": "Main portal title" },
+        "subtitle": { "type": "string", "description": "Portal subtitle" },
+        "agencyName": { "type": "string", "description": "Agency badge text" },
+        "logoUrl": { "type": "string", "description": "Logo image URL or base64 data" },
+        "bannerUrl": { "type": "string", "description": "Header banner image URL or base64 data" },
+        "bannerHeight": { "type": "number", "description": "Banner height in pixels" },
+        "primaryColor": { "type": "string", "description": "Primary accent color code" },
+        "headerBgColor": { "type": "string", "description": "Header background color code" }
+      },
+      "required": []
+    }
+  }
+}

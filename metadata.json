@@ -1,0 +1,6 @@
+{
+  "name": "EOC Reference Portal",
+  "description": "Centralized reference portal for DSWD Emergency Operation Center Google Drive, Sheets, Slides, Meet, PDFs, and external links.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

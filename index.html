@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emergency Operation Center - Reference Portal</title>
+  <meta name="description" content="Centralized collection of DSWD Emergency Operation Center Google Drive folders, Google Sheets, Google Slides, Google Meet links, manuals, and other EOC reference resources." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="./assets/drive.svg" />
+</head>
+<body>
+
+  <!-- Official Header Banner -->
+  <header class="portal-header">
+    <div class="container">
+      <div class="header-inner">
+        
+        <!-- Top Agency Branding Bar -->
+        <div class="brand-bar">
+          <div class="agency-badge">
+            <span class="agency-dot"></span>
+            <span>DSWD EOC • Reference Portal</span>
+          </div>
+        </div>
+
+        <!-- Main Header Title & Description -->
+        <div class="header-main">
+          <div class="logo-wrapper">
+            <img src="/src/assets/images/eoc_portal_logo_1784808168520.jpg" id="portalLogo" alt="DSWD Emergency Operation Center Logo" />
+          </div>
+          <div class="title-group">
+            <div class="subtitle">Reference Portal</div>
+            <h1 class="main-title">Emergency Operation Center</h1>
+            <p class="header-description">
+              Centralized collection of Google Drive folders, Google Sheets, Google Slides, Google Meet links, manuals, and other Emergency Operation Center resources.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Search & Category Filter Section -->
+  <section class="toolbar-section">
+    <div class="container">
+      <div class="toolbar-card">
+        
+        <!-- Search Row -->
+        <div class="search-row">
+          <div class="search-box" id="searchContainer">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="searchInput" 
+              class="search-input" 
+              placeholder="Search reference titles, descriptions, or keywords... (Press '/' to focus)" 
+              aria-label="Search reference links"
+            />
+            <button id="clearSearchBtn" class="clear-search-btn" style="display: none;" title="Clear search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="toolbar-meta">
+            <span>Showing <strong id="displayedCount">0</strong> of <strong id="totalCount">0</strong> links</span>
+          </div>
+        </div>
+
+        <!-- Category Filter Scroll Chips -->
+        <div class="filter-scroll" id="filterContainer">
+          <button class="filter-btn active" data-category="All">
+            <span>All References</span>
+          </button>
+          <button class="filter-btn" data-category="Google Drive">
+            <img class="btn-icon" src="./assets/drive.svg" alt="Drive" />
+            <span>Google Drive</span>
+          </button>
+          <button class="filter-btn" data-category="Google Sheets">
+            <img class="btn-icon" src="./assets/sheets.svg" alt="Sheets" />
+            <span>Google Sheets</span>
+          </button>
+          <button class="filter-btn" data-category="Google Slides">
+            <img class="btn-icon" src="./assets/slides.svg" alt="Slides" />
+            <span>Google Slides</span>
+          </button>
+          <button class="filter-btn" data-category="Google Meet">
+            <img class="btn-icon" src="./assets/meet.svg" alt="Meet" />
+            <span>Google Meet</span>
+          </button>
+          <button class="filter-btn" data-category="Google Forms">
+            <img class="btn-icon" src="./assets/forms.svg" alt="Forms" />
+            <span>Google Forms</span>
+          </button>
+          <button class="filter-btn" data-category="PDFs">
+            <img class="btn-icon" src="./assets/pdf.svg" alt="PDF" />
+            <span>PDF Manuals</span>
+          </button>
+          <button class="filter-btn" data-category="Websites">
+            <img class="btn-icon" src="./assets/website.svg" alt="Website" />
+            <span>Useful Portals</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Reference Cards Section -->
+  <main class="cards-section">
+    <div class="container">
+      
+      <!-- Cards Grid Container -->
+      <div id="cardsGrid" class="cards-grid">
+        <!-- Dynamic Cards automatically injected here via script.js -->
+      </div>
+
+      <!-- Empty State View -->
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <div class="empty-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </div>
+        <h2 class="empty-title">No matching reference links found</h2>
+        <p class="empty-text">Try adjusting your search query or selecting a different reference category above.</p>
+        <button id="resetFilterBtn" class="reset-filter-btn">Reset All Filters</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="portal-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-text">
+          Department of Social Welfare and Development &bull; Disaster Response Management Bureau
+        </div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span>EOC SYSTEM OPERATIONAL</span>
+        </div>
+        <div class="footer-links">
+          <a href="admin.html" class="footer-btn">Manage References (Admin)</a>
+          <button id="viewJsonBtn" class="footer-btn">View Config (links.json)</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span id="toastMessage">Link copied to clipboard</span>
+  </div>
+
+  <!-- JSON Configuration Inspector Modal -->
+  <div id="jsonModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">EOC Reference Links Configuration (links.json)</h3>
+        <button id="closeModalBtn" class="close-modal-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 0.75rem;">
+          Edit <code>links.json</code> or <code>links.js</code> in your project folder to add, update, or reorganize links without modifying the HTML code.
+        </p>
+        <pre id="jsonPreview" class="json-preview"></pre>
+      </div>
+      <div class="modal-footer">
+        <button id="copyJsonBtn" class="reset-filter-btn">Copy JSON Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Sources & Script Loaders -->
+  <script src="/src/main.ts" type="module"></script>
+</body>
+</html>

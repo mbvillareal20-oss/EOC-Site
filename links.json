@@ -1,0 +1,115 @@
+[
+  {
+    "id": "link-1",
+    "title": "2026 EOC References",
+    "category": "Google Drive",
+    "icon": "drive",
+    "description": "Main Google Drive repository containing 2026 EOC directives, situational logs, and operational folders.",
+    "url": "https://drive.google.com",
+    "badge": "Primary Drive",
+    "featured": true
+  },
+  {
+    "id": "link-2",
+    "title": "FO6 - EOC Briefing Main Slides",
+    "category": "Google Slides",
+    "icon": "slides",
+    "description": "Standard daily briefing presentation deck for FO6 Emergency Operation Center disaster updates.",
+    "url": "https://docs.google.com/presentation",
+    "badge": "Daily Briefing",
+    "featured": true
+  },
+  {
+    "id": "link-3",
+    "title": "EOC Objectives & Target Highlights",
+    "category": "Google Slides",
+    "icon": "slides",
+    "description": "Strategic operational objectives, targeted LGUs, and response timeline goals.",
+    "url": "https://docs.google.com/presentation",
+    "badge": "Strategic Plan"
+  },
+  {
+    "id": "link-4",
+    "title": "Virtual EOC Command Center",
+    "category": "Google Meet",
+    "icon": "meet",
+    "description": "24/7 virtual Google Meet room for incident command teleconferences and inter-agency coordination.",
+    "url": "https://meet.google.com",
+    "badge": "Live Meet",
+    "featured": true
+  },
+  {
+    "id": "link-5",
+    "title": "FNIs Allocation Tracker",
+    "category": "Google Sheets",
+    "icon": "sheets",
+    "description": "Real-time tracking matrix for Food and Non-Food Items (FNIs) distribution across affected municipalities.",
+    "url": "https://docs.google.com/spreadsheets",
+    "badge": "Live Matrix",
+    "featured": true
+  },
+  {
+    "id": "link-6",
+    "title": "FNIs Regional Stockpile Inventory",
+    "category": "Google Sheets",
+    "icon": "sheets",
+    "description": "Current stock balances of family food packs, hygiene kits, and raw materials in main logistics hubs.",
+    "url": "https://docs.google.com/spreadsheets",
+    "badge": "Warehouse Log"
+  },
+  {
+    "id": "link-7",
+    "title": "EOC Incident & Resource Intake Form",
+    "category": "Google Forms",
+    "icon": "forms",
+    "description": "Official intake form for field offices to request emergency relief stockpiles and deployment support.",
+    "url": "https://docs.google.com/forms",
+    "badge": "Intake Form"
+  },
+  {
+    "id": "link-8",
+    "title": "DSWD Disaster Operations Manual",
+    "category": "PDF Document",
+    "icon": "pdf",
+    "description": "Official standard operating procedures, guidelines, protocols, and institutional workflow PDF.",
+    "url": "https://dswd.gov.ph",
+    "badge": "SOP Manual",
+    "featured": true
+  },
+  {
+    "id": "link-9",
+    "title": "Quick Response Team (QRT) Roster",
+    "category": "PDF Document",
+    "icon": "pdf",
+    "description": "Contact numbers, shift duty rosters, and assigned clusters for DSWD QRT personnel.",
+    "url": "https://dswd.gov.ph",
+    "badge": "Contact Directory"
+  },
+  {
+    "id": "link-10",
+    "title": "DSWD DROMIC Operations Portal",
+    "category": "External Website",
+    "icon": "website",
+    "description": "Official Disaster Response Management and Information Center portal for terminal reporting.",
+    "url": "https://dromic.dswd.gov.ph",
+    "badge": "Official Portal"
+  },
+  {
+    "id": "link-11",
+    "title": "DOST-PAGASA Tropical Cyclone Monitor",
+    "category": "External Website",
+    "icon": "website",
+    "description": "Real-time weather forecast, typhoon advisories, and severe flood warnings.",
+    "url": "https://bagong.pagasa.dost.gov.ph",
+    "badge": "Weather Bulletin"
+  },
+  {
+    "id": "link-12",
+    "title": "NDRRMC Interactive Situation Map",
+    "category": "External Website",
+    "icon": "website",
+    "description": "National Disaster Risk Reduction and Management Council national situational updates.",
+    "url": "https://ndrrmc.gov.ph",
+    "badge": "National Council"
+  }
+]
