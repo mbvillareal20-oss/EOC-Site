@@ -440,11 +440,12 @@ function renderUsersTab(pane: HTMLElement) {
 
   if (currentUsersSearch.trim()) {
     const term = currentUsersSearch.toLowerCase().trim();
-    filtered = filtered.filter(u => 
-      u.email.toLowerCase().includes(term) ||
-      u.name.toLowerCase().includes(term) ||
-      u.role.toLowerCase().includes(term)
-    );
+    filtered = filtered.filter(u => {
+      const email = (u.email || '').toLowerCase();
+      const name = (u.name || '').toLowerCase();
+      const role = (u.role || '').toLowerCase();
+      return email.includes(term) || name.includes(term) || role.includes(term);
+    });
   }
 
   pane.innerHTML = `
@@ -509,9 +510,9 @@ function renderUsersTab(pane: HTMLElement) {
                 <tr>
                   <td>
                     <div class="user-cell">
-                      ${u.photoURL ? `<img src="${u.photoURL}" alt="${escapeHtml(u.name)}" />` : `
+                      ${u.photoURL ? `<img src="${u.photoURL}" alt="${escapeHtml(u.name || u.email)}" />` : `
                         <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--header-border); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 13px;">
-                          ${u.name ? u.name.charAt(0).toUpperCase() : u.email.charAt(0).toUpperCase()}
+                          ${(u.name || u.email).charAt(0).toUpperCase()}
                         </div>
                       `}
                       <div>
@@ -627,18 +628,18 @@ function renderBannerTab(pane: HTMLElement) {
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="cfgMainTitle">Main Title</label>
-              <input type="text" id="cfgMainTitle" class="form-control" value="${escapeHtml(current.mainTitle)}" required />
+              <input type="text" id="cfgMainTitle" class="form-control" value="${escapeHtml(current.mainTitle || 'Emergency Operation Center')}" required />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="cfgSubtitle">Subtitle</label>
-              <input type="text" id="cfgSubtitle" class="form-control" value="${escapeHtml(current.subtitle)}" required />
+              <input type="text" id="cfgSubtitle" class="form-control" value="${escapeHtml(current.subtitle || 'Reference Portal')}" required />
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-label" for="cfgAgencyName">Agency Badge Text</label>
-            <input type="text" id="cfgAgencyName" class="form-control" value="${escapeHtml(current.agencyName)}" required />
+            <input type="text" id="cfgAgencyName" class="form-control" value="${escapeHtml(current.agencyName || 'DSWD EOC • Operational Directory')}" required />
           </div>
 
           <!-- Banner Background -->
@@ -1008,7 +1009,7 @@ function getIconSvgPath(icon: string): string {
   }
 }
 
-function escapeHtml(str: string): string {
+function escapeHtml(str?: string | null): string {
   if (!str) return '';
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }

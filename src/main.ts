@@ -145,34 +145,26 @@ function showLoginOverlay() {
   const currentHost = window.location.hostname;
 
   authOverlay.innerHTML = `
+<<<<<<< HEAD
     <div class="auth-card" style="max-width: 440px; width: 90%; position: relative;">
       <button id="closeAuthModalBtn" title="Close modal" style="position: absolute; top: 0.85rem; right: 0.85rem; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 0.25rem;">×</button>
+=======
+    <div class="auth-card">
+      <button id="closeAuthModalBtn" title="Close modal" class="close-modal-btn auth-close-btn" aria-label="Close login window">✕</button>
+>>>>>>> 00b2904 (Modernize EOC Reference Portal UI)
 
-      <img src="${logoUrl}" class="auth-logo" alt="DSWD EOC Logo" />
-      <div>
-        <h2 class="auth-title">EOC Reference Portal</h2>
-        <p class="auth-subtitle" style="margin-top: 0.35rem;">
-          Department of Social Welfare and Development<br/>
-          Emergency Operation Center
-        </p>
-      </div>
-
-      <!-- Direct Email Access -->
-      <div style="background-color: var(--bg-main); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); text-align: left;">
-        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem;">
-          ✉️ Sign In with Authorized Email
-        </label>
-        <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
-          <input type="email" id="emailAuthInput" placeholder="name@dswd.gov.ph" value="mblvillareal@dswd.gov.ph" class="form-input" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;" />
-          <button id="emailAuthBtn" class="btn btn-primary" style="white-space: nowrap; font-size: 0.85rem; padding: 0.5rem 0.9rem;">
-            Sign In
-          </button>
+      <div class="auth-card__brand">
+        <img src="${logoUrl}" class="auth-logo" alt="DSWD EOC Logo" />
+        <div>
+          <h2 class="auth-title">EOC Reference Portal</h2>
+          <p class="auth-subtitle">
+            Department of Social Welfare and Development<br/>
+            Emergency Operation Center
+          </p>
         </div>
-        <p style="font-size: 0.725rem; color: var(--text-muted); margin-top: 0.35rem; line-height: 1.3;">
-          Authorized DSWD accounts (@dswd.gov.ph) gain instant access to reference materials &amp; Admin features.
-        </p>
       </div>
 
+<<<<<<< HEAD
       <div style="display: flex; align-items: center; gap: 0.75rem; color: var(--text-muted); font-size: 0.75rem;">
         <div style="flex: 1; height: 1px; background-color: var(--border-subtle);"></div>
         <span>OR</span>
@@ -205,6 +197,44 @@ function showLoginOverlay() {
       </button>
 
       <div id="authErrorMsg" style="display: none; padding: 0.75rem; border-radius: 6px; background-color: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); color: #dc2626; font-size: 0.75rem; margin-top: 0.75rem;"></div>
+=======
+      <div class="auth-card__body">
+        <div class="auth-card__panel">
+          <label class="auth-card__label">✉️ Sign In with Authorized Email</label>
+          <div class="auth-card__inputRow">
+            <input type="email" id="emailAuthInput" placeholder="name@dswd.gov.ph" value="mblvillareal@dswd.gov.ph" class="form-control auth-email-input" />
+            <button id="emailAuthBtn" class="btn btn-primary auth-inline-btn">Sign In</button>
+          </div>
+          <p class="auth-card__help">
+            Authorized DSWD accounts (@dswd.gov.ph) gain instant access to reference materials &amp; Admin features.
+          </p>
+        </div>
+
+        <div class="auth-card__divider"><span>Or</span></div>
+
+        <button id="authLoginBtn" class="google-signin-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.29v3.15C3.26 21.3 7.37 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.29C.47 8.21 0 10.05 0 12s.47 3.79 1.29 5.42l3.99-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.26 2.7 1.29 6.58l3.99 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Sign in with Google OAuth</span>
+        </button>
+
+        <div class="auth-card__domainBox">
+          <div class="auth-card__domainHeader">
+            <span>Current App Domain</span>
+            <button id="copyDomainBtn" class="btn btn-secondary btn-sm auth-copy-btn">📋 Copy Domain</button>
+          </div>
+          <code id="domainCode" class="auth-domainCode">${currentHost}</code>
+          <span class="auth-card__helper">To enable Google Popup Auth, add this domain in <strong>Firebase Console → Authentication → Settings → Authorized domains</strong>.</span>
+        </div>
+
+        <button id="continueVisitorBtn" class="btn btn-secondary auth-visitor-btn">Continue Browsing as Visitor</button>
+        <div id="authErrorMsg" class="auth-error-msg"></div>
+      </div>
+>>>>>>> 00b2904 (Modernize EOC Reference Portal UI)
     </div>
   `;
 
@@ -314,8 +344,13 @@ function showAccessDeniedOverlay(email: string) {
   }
 
   deniedOverlay.innerHTML = `
+<<<<<<< HEAD
     <div class="denied-card" style="position: relative;">
       <button id="closeDeniedBtn" style="position: absolute; top: 0.85rem; right: 0.85rem; background: none; border: none; font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 0.25rem;">×</button>
+=======
+    <div class="denied-card">
+      <button id="closeDeniedBtn" class="close-modal-btn auth-close-btn" aria-label="Close access denied window">✕</button>
+>>>>>>> 00b2904 (Modernize EOC Reference Portal UI)
 
       <div class="denied-icon-box">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -325,18 +360,18 @@ function showAccessDeniedOverlay(email: string) {
       </div>
       <div>
         <h2 class="denied-title">Access Restricted</h2>
-        <div class="denied-email-badge" style="margin-top: 0.5rem; display: inline-block;">
+        <div class="denied-email-badge">
           ${email}
         </div>
       </div>
       <p class="denied-message">
         Your account is not registered as an Admin. You can continue viewing all public reference links as a visitor.
       </p>
-      <div style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-top: 0.5rem;">
-        <button id="deniedVisitorBtn" class="btn btn-primary" style="width: 100%;">
+      <div class="denied-actions">
+        <button id="deniedVisitorBtn" class="btn btn-primary auth-visitor-btn">
           Continue Browsing as Visitor
         </button>
-        <button id="deniedSignOutBtn" class="btn btn-secondary" style="width: 100%;">
+        <button id="deniedSignOutBtn" class="btn btn-secondary auth-visitor-btn">
           Sign Out &amp; Switch Account
         </button>
       </div>
@@ -377,7 +412,11 @@ function renderUserHeaderPill(account: UserAccount | null, user: any) {
 
   if (!user) {
     userContainer.innerHTML = `
+<<<<<<< HEAD
       <button id="openSignInModalBtn" style="display: flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.85rem; font-size: 0.825rem; font-weight: 600; border-radius: 20px; background: rgba(255, 255, 255, 0.15); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer;">
+=======
+      <button id="openSignInModalBtn" class="admin-nav-link">
+>>>>>>> 00b2904 (Modernize EOC Reference Portal UI)
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
           <polyline points="10 17 15 12 10 7"></polyline>
